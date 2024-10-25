@@ -17,65 +17,125 @@
  * License-Filename: LICENSE
  */
 
-import { useEffect, useState } from 'react';
+import {
+    useEffect,
+    useRef,
+    useState
+} from 'react';
+import WebAppOrtResult from './models/WebAppOrtResult';
+import AppPage from './pages/AppPage';
+import LoadingPage from './pages/LoadingPage';
+import ErrorPage from './pages/ErrorPage';
+import './App.css';
 
-const ortResultWorkerCode = `
-self.onmessage = function (e) {
-    const result = processOrtResultData(e.data);
-    self.postMessage(result);
-};
+let webAppOrtResult;
 
-function processOrtResultData(data) {
-    let sum = 0;
-    for (let i = 0; i < data; i++) {
-        sum += i;
-    }
-    return sum;
+function pause(seconds) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, seconds * 1000);
+    });
 }
-`;
-let ortResultWorker;
+
+async function loadOrtResultData(setLoadingStatus) {
+    console.log("loadOrtResultData");
+    // Parse JSON report data embedded in HTML page
+    const ortResultDataNode = document.querySelector('script[id="ort-report-data"]');
+    let ortResultData;
+
+    if (ortResultDataNode) {
+        const { textContent: ortResultDataNodeContents, type: ortResultDataNodeType } = ortResultDataNode;
+
+        // Check report is WebApp template e.g. contains 'ORT_REPORT_DATA_PLACEHOLDER'
+        if (!!ortResultDataNodeContents && ortResultDataNodeContents.length !== 27) {
+            setLoadingStatus({ percentage: 10, text: 'Loading result data...' });
+
+            if (ortResultDataNodeType === 'application/gzip') {
+                // Decode Base64 (convert ASCII to binary).
+                const decodedBase64Data = atob(ortResultDataNodeContents);
+
+                await pause(2);
+
+                // Convert binary string to character-number array.
+                const charData = decodedBase64Data.split('').map((x) => x.charCodeAt(0));
+
+                // Turn number array into byte-array.
+                const binData = new Uint8Array(charData);
+
+                setLoadingStatus({ percentage: 20, text: 'Uncompressing result data...' });
+                await pause(2);
+
+                // Decompress byte-array.
+                const data = pako.inflate(binData);
+
+                await pause(2);
+                setLoadingStatus({ percentage: 40, text: 'Uncompressed result data...' });
+
+                ortResultData = JSON.parse(new TextDecoder('utf-8').decode(data));
+            } else {
+                await pause(2);
+
+                ortResultData = JSON.parse(ortResultDataNodeContents);
+            }
+
+            setLoadingStatus({ percentage: 55, text: 'Processing result data...' });
+            await pause(2);
+
+            webAppOrtResult = new WebAppOrtResult(ortResultData);
+            await pause(2);
+            setLoadingStatus({ percentage: 95, text: 'Processed report data...' });
+
+            console.log("webAppOrtResult", webAppOrtResult);
+
+            // Make webAppOrtResult inspectable via Browser's console
+            window.ORT = webAppOrtResult;
+
+            setLoadingStatus({ percentage: 99, text: 'Almost ready to display scan report...' });
+            await pause(2);
+             setLoadingStatus({ percentage: 100 });
+        } else {
+            setLoadingStatus({ error: true, text: 'No review results could be loaded...' });
+        }
+    } else {
+        setLoadingStatus({ error: true, text: 'Oops, something went wrong...' });
+    }
+}
 
 function App () {
-    const [count, setCount] = useState(0);
-    const [resultLoaded, setResultLoaded] = useState(false);
-
+    const isOrtResultLoaded = useRef(false);
+    const [currentPage, setCurrentPage] = useState('loading');
+    const [loadingStatus, setLoadingStatus] = useState({ error: false, percentage: 0, text: '' });
+    
     useEffect(() => {
-        // Create a Blob from the worker code string
-        const blob = new Blob([ortResultWorkerCode], { type: 'application/javascript' });
-
-        // Create a URL for the Blob
-        const ortResultWorkerURL = URL.createObjectURL(blob);
-
-        // Create a new Web Worker
-        if (!ortResultWorker) {
-            ortResultWorker = new Worker(ortResultWorkerURL);
-
-            ortResultWorker.onmessage = (e) => {
-                console.log('Result from worker:', e.data);
-                setResultLoaded(true);
-            };
-
-            // Start the heavy computation
-            const dataToProcess = 10000; // Adjust this value as needed
-            ortResultWorker.postMessage(dataToProcess);
-
-            // Optionally, handle errors
-            ortResultWorker.onerror = (error) => {
-                console.error('Worker error:', error);
-            };
-
-            // Clean up the URL after use
-            ortResultWorker.onterminate = () => {
-                URL.revokeObjectURL(workerURL);
-            };
+        if (!isOrtResultLoaded.current) {
+            isOrtResultLoaded.current = true
+            loadOrtResultData(setLoadingStatus);
         }
     }, []);
 
-    return (
-        <button onClick={ () => setCount (count + 1)}>
-            {count}
-        </button>
-    );
+    useEffect(() => {
+        if (loadingStatus.error) {
+            setCurrentPage('oops');
+        }
+        
+        if (loadingStatus.percentage === 100) {
+            setCurrentPage('oops');
+        }
+    }, [loadingStatus]);
+
+    const renderPage = () => {
+        switch (currentPage) {
+        case 'loading':
+            return (
+                <LoadingPage status={loadingStatus}/>
+            );
+        case 'app':
+            return <AppPage />;
+        default:
+            return <ErrorPage/>
+        }
+    };
+
+    return (renderPage())
 }
 
 export default App;
