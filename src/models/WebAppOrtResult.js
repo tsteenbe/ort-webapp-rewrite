@@ -75,6 +75,8 @@ class WebAppOrtResult {
 
     #packages = [];
 
+    #packagesByKeyMap = new Map();
+
     #pathExcludes = [];
 
     #paths = [];
@@ -140,6 +142,7 @@ class WebAppOrtResult {
                 for (let i = 0, len = packages.length; i < len; i++) {
                     const webAppPackage = new WebAppPackage(packages[i], this);
                     this.#packages.push(webAppPackage);
+                    this.#packagesByKeyMap.set(webAppPackage.key, webAppPackage);
 
                     if (webAppPackage.isProject) {
                         this.#projects.push(webAppPackage);
@@ -510,6 +513,10 @@ class WebAppOrtResult {
 
     getPackageByIndex(val) {
         return this.#packages[val] || null;
+    }
+
+    getPackageByKey(val) {
+        return this.#packagesByKeyMap.get(val) || [];
     }
 
     getPathByIndex(val) {

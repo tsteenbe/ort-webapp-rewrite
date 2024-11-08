@@ -77,7 +77,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                     ),
                                     key: 'ort-tabs-table',
                                     children: (
-                                        <ResultsTable />
+                                        <ResultsTable webAppOrtResult={ webAppOrtResult }/>
                                     )
                                 },
                                 {
