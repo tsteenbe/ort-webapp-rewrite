@@ -36,7 +36,7 @@ function pause(seconds) {
     });
 }
 
-async function loadOrtResultData(setLoadingStatus) {
+async function loadOrtResultData(setLoadingBarStatus) {
     console.log("loadOrtResultData");
     // Parse JSON report data embedded in HTML page
     const ortResultDataNode = document.querySelector('script[id="ort-report-data"]');
@@ -47,7 +47,7 @@ async function loadOrtResultData(setLoadingStatus) {
 
         // Check report is WebApp template e.g. contains 'ORT_REPORT_DATA_PLACEHOLDER'
         if (!!ortResultDataNodeContents && ortResultDataNodeContents.length !== 27) {
-            setLoadingStatus({ percentage: 10, text: 'Loading result data...' });
+            setLoadingBarStatus({ percentage: 10, text: 'Loading result data...' });
 
             if (ortResultDataNodeType === 'application/gzip') {
                 // Decode Base64 (convert ASCII to binary).
@@ -61,14 +61,14 @@ async function loadOrtResultData(setLoadingStatus) {
                 // Turn number array into byte-array.
                 const binData = new Uint8Array(charData);
 
-                setLoadingStatus({ percentage: 20, text: 'Uncompressing result data...' });
+                setLoadingBarStatus({ percentage: 20, text: 'Uncompressing result data...' });
                 await pause(2);
 
                 // Decompress byte-array.
                 const data = pako.inflate(binData);
 
                 await pause(2);
-                setLoadingStatus({ percentage: 40, text: 'Uncompressed result data...' });
+                setLoadingBarStatus({ percentage: 40, text: 'Uncompressed result data...' });
 
                 ortResultData = JSON.parse(new TextDecoder('utf-8').decode(data));
             } else {
@@ -77,61 +77,81 @@ async function loadOrtResultData(setLoadingStatus) {
                 ortResultData = JSON.parse(ortResultDataNodeContents);
             }
 
-            setLoadingStatus({ percentage: 55, text: 'Processing result data...' });
+            setLoadingBarStatus({ percentage: 55, text: 'Processing result data...' });
             await pause(2);
 
             webAppOrtResult = new WebAppOrtResult(ortResultData);
             await pause(2);
-            setLoadingStatus({ percentage: 95, text: 'Processed report data...' });
+            setLoadingBarStatus({ percentage: 95, text: 'Processed report data...' });
 
             console.log("webAppOrtResult", webAppOrtResult);
 
             // Make webAppOrtResult inspectable via Browser's console
             window.ORT = webAppOrtResult;
 
-            setLoadingStatus({ percentage: 99, text: 'Almost ready to display scan report...' });
+            setLoadingBarStatus({ percentage: 99, text: 'Almost ready to display scan report...' });
             await pause(2);
-             setLoadingStatus({ percentage: 100 });
+            setLoadingBarStatus({ percentage: 100 });
         } else {
-            setLoadingStatus({ error: true, text: 'No review results could be loaded...' });
+            setLoadingBarStatus({ percentage: -2, text: 'No review results could be loaded...' });
         }
     } else {
-        setLoadingStatus({ error: true, text: 'Oops, something went wrong...' });
+        setLoadingBarStatus({ percentage: -1 });
     }
 }
 
-function App () {
+function App() {
     const isOrtResultLoaded = useRef(false);
     const [currentPage, setCurrentPage] = useState('loading');
-    const [loadingStatus, setLoadingStatus] = useState({ error: false, percentage: 0, text: '' });
-    
+    const [loadingBarStatus, setLoadingBarStatus] = useState({ percentage: 0, text: '' });
+
     useEffect(() => {
         if (!isOrtResultLoaded.current) {
             isOrtResultLoaded.current = true
-            loadOrtResultData(setLoadingStatus);
+            loadOrtResultData(setLoadingBarStatus);
         }
     }, []);
 
     useEffect(() => {
-        if (loadingStatus.error) {
-            setCurrentPage('oops');
+        if (loadingBarStatus.percentage === -2) {
+            console.log('unknown error')
+            setCurrentPage('error');
         }
-        
-        if (loadingStatus.percentage === 100) {
-            setCurrentPage('oops');
+
+        if (loadingBarStatus.percentage === -1) {
+            console.log('loading error')
+            setCurrentPage('loading-error');
         }
-    }, [loadingStatus]);
+
+        if (loadingBarStatus.percentage === 100) {
+            setCurrentPage('app');
+        }
+    }, [loadingBarStatus]);
 
     const renderPage = () => {
         switch (currentPage) {
-        case 'loading':
-            return (
-                <LoadingPage status={loadingStatus}/>
-            );
-        case 'app':
-            return <AppPage />;
-        default:
-            return <ErrorPage/>
+            case 'loading':
+                return (
+                    <LoadingPage status={loadingBarStatus} />
+                );
+            case 'loading-error':
+                return (
+                    <ErrorPage
+                        message="No review results could be loaded..."
+                        submessage="Either something went wrong or you are looking at an ORT report template file."
+                    />
+                );
+            case 'app':
+                return <AppPage webAppOrtResult= { webAppOrtResult }/>;
+            case 'error':
+            default:
+                return (
+                    <ErrorPage
+                        message="Oops, something went wrong..."
+                        submessage="Try reloading this report. If that does not solve the issue please
+                                contact your OSS Review Toolkit admin(s) for support."
+                    />
+                );
         }
     };
 

@@ -19,42 +19,43 @@
 
 import {
     Col,
+    Layout,
     Progress,
     Row
 } from 'antd';
 
+const { Content } = Layout;
 
 const LoadingPage = ({ status }) => {
     const { percentage, text } = status;
 
     return (
-        <Row
-            align="middle"
-            justify="space-around"
-            className="ort-app"
-            key="ort-loading"
-            type="flex"
-        >
-            <Col span={6}>
-                <a
-                    href="https://github.com/oss-review-toolkit/ort"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    <div className="ort-loading-logo ort-logo" />
-                </a>
-                <span>
-                    {text}
-                </span>
-                {percentage === 100
-                    ? (
-                        <Progress percent={100} />
-                    )
-                    : (
-                        <Progress percent={percentage} status="active" />
-                    )}
-            </Col>
-        </Row>
+        <Layout>
+            <Content>
+                <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+                    <Col span={6}>
+                        <a
+                            href="https://github.com/oss-review-toolkit/ort"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            <div className="ort-loading-logo ort-logo" />
+                        </a>
+                        <span>
+                            {text}
+                        </span>
+                        {percentage === 100
+                            ? (
+                                <Progress percent={100} />
+                            )
+                            : (
+                                <Progress percent={percentage} status="active" />
+                            )}
+                    </Col>
+
+                </Row>
+            </Content>
+        </Layout>
     );
 };
 

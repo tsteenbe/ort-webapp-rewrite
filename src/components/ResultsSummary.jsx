@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The ORT Project Authors (see <https://github.com/oss-review-toolkit/ort/blob/main/NOTICE>)
+ * Copyright (C) 2024 The ORT Project Authors (see <https://github.com/oss-review-toolkit/ort/blob/main/NOTICE>)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,10 @@
  * License-Filename: LICENSE
  */
 
-import React from 'react'
+const ResultsSummary = () => (
+    <div>
+        ResultsSummary
+    </div>
+);
 
-import ReactDOM from 'react-dom/client'
-
-import App from './App.jsx'
-import './index.css'
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-)
+export default ResultsSummary;

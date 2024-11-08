@@ -20,47 +20,45 @@
 import {
     Alert,
     Col,
+    Layout,
     Row
 } from 'antd';
 
+const { Content } = Layout;
 
-const ErrorPage = ({ message }) => {
-    return (
-        <Row
-            align="middle"
-            className="ort-app"
-            justify="space-around"
-            key="ort-oops-error-msg"
-            type="flex"
-        >
-            <Col span={8}>
-                <Alert
-                    message="Oops, something went wrong..."
-                    type="error"
-                    description={(
-                        <div>
-                            <p>
-                                Try reloading this report. If that does not solve the issue please
-                                contact your OSS Review Toolkit admin(s) for support.
-                            </p>
-                            <p>
-                                If you believe you found a bug please fill a
-                                {' '}
-                                <a
-                                    href="https://github.com/oss-review-toolkit/ort/issues"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    issue on GitHub
-                                </a>
-                                .
-                            </p>
-                        </div>
-                    )}
-                />
-            </Col>
-        </Row>
-  );
-};
+const ErrorPage = ({ message, submessage }) => (
+    <Layout>
+        <Content className="circuit-board-background">
+            <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+                <Col span={8}>
+                    <Alert
+                        message={ message }
+                        type="error"
+                        description={(
+                            <div>
+                                <p>
+                                    { submessage }
+                                </p>
+                                <p>
+                                    If you believe you found a bug please fill a
+                                    {' '}
+                                    <a
+                                        href="https://github.com/oss-review-toolkit/ort/issues"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        issue on GitHub
+                                    </a>
+                                    .
+                                </p>
+                            </div>
+                        )}
+                        showIcon
+                    />
+                </Col>
+            </Row>
+        </Content>
+    </Layout>
+);
 
 export default ErrorPage;
