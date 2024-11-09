@@ -37,7 +37,6 @@ function pause(seconds) {
 }
 
 async function loadOrtResultData(setLoadingBarStatus) {
-    console.log("loadOrtResultData");
     // Parse JSON report data embedded in HTML page
     const ortResultDataNode = document.querySelector('script[id="ort-report-data"]');
     let ortResultData;
@@ -53,7 +52,7 @@ async function loadOrtResultData(setLoadingBarStatus) {
                 // Decode Base64 (convert ASCII to binary).
                 const decodedBase64Data = atob(ortResultDataNodeContents);
 
-                await pause(2);
+                await pause(1);
 
                 // Convert binary string to character-number array.
                 const charData = decodedBase64Data.split('').map((x) => x.charCodeAt(0));
@@ -62,17 +61,17 @@ async function loadOrtResultData(setLoadingBarStatus) {
                 const binData = new Uint8Array(charData);
 
                 setLoadingBarStatus({ percentage: 20, text: 'Uncompressing result data...' });
-                await pause(2);
+                await pause(1);
 
                 // Decompress byte-array.
                 const data = pako.inflate(binData);
 
-                await pause(2);
+                await pause(1);
                 setLoadingBarStatus({ percentage: 40, text: 'Uncompressed result data...' });
 
                 ortResultData = JSON.parse(new TextDecoder('utf-8').decode(data));
             } else {
-                await pause(2);
+                await pause(1);
 
                 ortResultData = JSON.parse(ortResultDataNodeContents);
             }
@@ -83,8 +82,6 @@ async function loadOrtResultData(setLoadingBarStatus) {
             webAppOrtResult = new WebAppOrtResult(ortResultData);
             await pause(2);
             setLoadingBarStatus({ percentage: 95, text: 'Processed report data...' });
-
-            console.log("webAppOrtResult", webAppOrtResult);
 
             // Make webAppOrtResult inspectable via Browser's console
             window.ORT = webAppOrtResult;
@@ -114,12 +111,10 @@ function App() {
 
     useEffect(() => {
         if (loadingBarStatus.percentage === -2) {
-            console.log('unknown error')
             setCurrentPage('error');
         }
 
         if (loadingBarStatus.percentage === -1) {
-            console.log('loading error')
             setCurrentPage('loading-error');
         }
 

@@ -23,8 +23,8 @@
     },
     "dependencies": {
         "@ant-design/icons": "^5.5.1",
-        "antd": "5.21.6",
-        "markdown-to-jsx": "^7.5.0",
+        "antd": "5.22.1",
+        "markdown-to-jsx": "^7.6.1",
         "memoize-one": "^6.0.0",
         "pako": "^2.1.0",
         "prop-types": "^15.8.1",
@@ -48,9 +48,9 @@
         "eslint-plugin-react": "^7.37.2",
         "eslint-plugin-react-hooks": "^5.0.0",
         "eslint-plugin-react-refresh": "^0.4.14",
-        "rollup": "^4.24.4",
+        "rollup": "^4.26.0",
         "rollup-plugin-copy": "^3.5.0",
-        "vite": "^5.4.10",
+        "vite": "^5.4.11",
         "vite-plugin-singlefile": "^2.0.3"
     },
     "production": [
@@ -62,5 +62,6 @@
         "last 1 chrome version",
         "last 1 firefox version",
         "last 1 safari version"
-    ]
+    ],
+    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

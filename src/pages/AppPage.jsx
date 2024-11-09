@@ -38,7 +38,7 @@ import ResultsTree from './../components/ResultsTree';
 const { Content } = Layout;
 
 const AppPage = ({ webAppOrtResult }) => {
-    const [activeTab, setActiveTab] = useState('ort-tabs-table');
+    const [activeTab, setActiveTab] = useState('ort-tabs-summary');
 
     const handleAboutClick = (key) => {
     };
@@ -65,7 +65,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                     ),
                                     key: 'ort-tabs-summary',
                                     children: (
-                                        <ResultsSummary/>
+                                        <ResultsSummary webAppOrtResult={ webAppOrtResult }/>
                                     )
                                 },
                                 {
@@ -89,7 +89,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                     ),
                                     key: 'ort-tabs-tree',
                                     children: (
-                                        <ResultsTree />
+                                        <ResultsTree webAppOrtResult={ webAppOrtResult } />
                                     )
                                 }
                             ]}

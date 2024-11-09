@@ -232,6 +232,10 @@ class WebAppOrtIssue {
     hasHowToFix() {
         return !!this.#howToFix;
     }
+
+    hasPackage() {
+        return !!this.#package;
+    }
 }
 
 export default WebAppOrtIssue;
