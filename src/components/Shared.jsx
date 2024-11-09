@@ -62,7 +62,25 @@ const getColumnSearchProps = (dataIndex, filteredValue, setFilteredValue) => ({
         </div>
     ),
     filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilter: (searchStr, record) => {
+        console.log("value/record", searchStr, record);
+        // return record[dataIndex]
+        //     ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        //     : false;
+
+        const searchStrValues = searchStr.split(/[\s,]+/).map(item => item.trim().toLowerCase());
+        let recordValue;
+
+        if (Number.isInteger(record[dataIndex]) || Array.isArray(record[dataIndex])) {
+            recordValue = record[dataIndex].toString().toLowerCase();
+        } else if (record[dataIndex] instanceof Set) {
+            recordValue = Array.from(record[dataIndex]).toString().toLowerCase();
+        } else {
+            recordValue = record[dataIndex].toLowerCase();
+        }
+
+        return !searchStrValues.every(value => !recordValue.includes(value));
+    },
     render: (text) => text,
 });
 
