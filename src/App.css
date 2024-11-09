@@ -1,3 +1,94 @@
+/* === Styling for Results Summary Tab === */
+
+.ort-summary .ant-col-offset-1 {
+    margin-left: 2.5%;
+}
+
+/* === Styling for PackageCollapse === */
+
+.ort-package-collapse {
+    background-color: #fff;
+    font-weight: 400;
+}
+
+.ort-package-collapse > .ant-collapse-item,
+.ort-package-collapse tr.ant-descriptions-row {
+    border-bottom: 0px;
+    line-height: 0.9em;
+}
+
+.ort-package-collapse .ant-descriptions .ant-descriptions-item-label {
+    color: rgba(0, 0, 0, 0.88);
+}
+
+.ort-package-collapse td,
+.ort-package-collapse .ant-descriptions-item-label,
+.ort-package-collapse .ant-descriptions-item-content {
+    font-size: 0.9em;
+}
+
+.ort-package-collapse .ant-descriptions-row > td {
+    border-bottom: 0px;
+}
+
+.ort-package-collapse .ort-package-path-description div > table > tbody > tr {
+    border-bottom: 0px;
+    padding: 0px;
+}
+
+.ort-package-collapse .ort-package-path-description div > table > tbody > tr > td {
+    border-bottom: 0px;
+    padding: 2px 0px 0px 0px !important;
+}
+
+.ort-package-collapse .ort-package-path-description div > table > tbody > tr > td > span {
+    font-size: 0.7em;
+}
+
+/* === Styling for PackagePaths === */
+
+.ort-package-path .ant-steps-item .ant-steps-item-content {
+    width: auto;
+}
+
+/* === Styling for LoadingPage === */
+
+.ort-loading-logo {
+    width: 285px;
+    height: 60px;
+}
+
+/* === General === */
+
+/* Colors of exclude, error, hint, success and warning icons */
+.ort-critical {
+    color: #c61b10;
+}
+
+.ort-error, .ort-high {
+    color: #f5222d;
+}
+
+.ort-excluded {
+    color: #b0c4de;
+}
+
+.ort-hint, .ort-unknown {
+    color: #84b6eb;
+}
+
+.ort-low, .ort-ok {
+    color: #52c41a;
+}
+
+.ort-warning {
+    color: #ef8f1c;
+}
+
+.ort-medium {
+    color: #d5c920;
+}
+
 .ort-app {
     background-color: #fff;
     border: 1px solid rgba(34,36,38,.15);
@@ -6,10 +97,6 @@
     margin: 0.5em;
 }
 
-.ort-loading-logo {
-    width: 285px;
-    height: 60px;
-}
 
 /* === OSS Review Toolkit logo === */
 

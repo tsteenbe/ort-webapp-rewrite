@@ -17,6 +17,11 @@
  * License-Filename: LICENSE
  */
 
+import React, {
+    useMemo,
+    useState
+} from 'react';
+
 import {
     CopyrightOutlined,
     FileAddOutlined,
@@ -25,15 +30,59 @@ import {
     MinusSquareOutlined,
     PlusSquareOutlined
 } from '@ant-design/icons';
-import { Table, Tooltip } from 'antd';
+import {
+    Empty,
+    Table,
+    Tooltip
+} from 'antd';
 
 import PathExcludesTable from './PathExcludesTable';
+import { getColumnSearchProps } from './Shared';
 
 // Generates the HTML to display scanFindings as a Table
 const PackageFindingsTable = ({ webAppPackage }) => {
-    const { findings } = webAppPackage;
-    const columns = [];
+    // Convert scan findings as Antd only accepts vanilla objects as input
+    const findings = useMemo(
+        () => {
+            return webAppPackage.findings
+                .map(
+                    (finding) => ({
+                        endLine: finding.endLine,
+                        isExcluded: finding.isExcluded,
+                        key: finding.key,
+                        path: finding.path,
+                        pathExcludes: finding.pathExcludes,
+                        pathExcludeReasonsText: Array.from(finding.pathExcludeReasons).join(', '),
+                        startLine: finding.startLine,
+                        value: finding.value
+                    })
+                )
+        },
+        []
+    );
+
     let expandable = null;
+
+    /* === Table state handling === */
+
+    // State variable for displaying table in various pages
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 100 });
+
+    // State variable for filtering the contents of table columns
+    const filteredInfoDefault = {
+        value: '',
+        path: '',
+        startLine: '',
+        endLine: ''
+    };
+    const [filteredInfo, setFilteredInfo] = useState(filteredInfoDefault);
+
+    // State variable for showing or hiding table columns
+    const [sortedInfo, setSortedInfo] = useState({});
+
+    /* === Table columns === */
+
+    const columns = [];
 
     if (webAppPackage.hasDetectedExcludedLicenses() || webAppPackage.hasExcludedFindings()) {
         columns.push({
@@ -61,32 +110,32 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                 }
             ])(),
             key: 'excludes',
-            onFilter: (value, webAppFinding) => {
+            onFilter: (value, record) => {
                 if (value === 'excluded') {
-                    return webAppFinding.isExcluded;
+                    return record.isExcluded;
                 }
 
                 if (value === 'included') {
-                    return !webAppFinding.isExcluded;
+                    return !record.isExcluded;
                 }
 
                 return false;
             },
-            render: (webAppFinding) => (
-                webAppFinding.isExcluded
+            render: (record) => (
+                record.isExcluded
                     ? (
-                    <span className="ort-excludes">
-                        <Tooltip
-                            placement="right"
-                            title={Array.from(webAppFinding.pathExcludeReasons).join(', ')}
-                        >
-                            <FileExcelOutlined className="ort-excluded" />
-                        </Tooltip>
-                    </span>
-                        )
+                        <span className="ort-excludes">
+                            <Tooltip
+                                placement="right"
+                                title={record.pathExcludeReasonsText}
+                            >
+                                <FileExcelOutlined className="ort-excluded" />
+                            </Tooltip>
+                        </span>
+                    )
                     : (
-                    <FileAddOutlined />
-                        )
+                        <FileAddOutlined />
+                    )
             ),
             width: '2em'
         });
@@ -107,11 +156,11 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                 return (
                     expanded
                         ? (
-                        <MinusSquareOutlined onClick={(e) => onExpand(record, e)} />
-                            )
+                            <MinusSquareOutlined onClick={(e) => onExpand(record, e)} />
+                        )
                         : (
-                        <PlusSquareOutlined onClick={(e) => onExpand(record, e)} />
-                            )
+                            <PlusSquareOutlined onClick={(e) => onExpand(record, e)} />
+                        )
                 );
             },
             indentSize: 0
@@ -144,12 +193,13 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                     value: 'LICENSE'
                 }
             ])(),
+            filteredValue: filteredInfo.type || null,
             key: 'type',
-            onFilter: (value, row) => value === row.type,
-            render: (type) => (
+            onFilter: (value, record) => value === record.type,
+            render: (text) => (
                 <span className="ort-scan-finding-type">
-                    {type === 'LICENSE' && (<FileTextOutlined />)}
-                    {type === 'COPYRIGHT' && (<CopyrightOutlined />)}
+                    {text === 'LICENSE' && (<FileTextOutlined />)}
+                    {text === 'COPYRIGHT' && (<CopyrightOutlined />)}
                 </span>
             ),
             width: '1em'
@@ -197,6 +247,7 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                         }
                     )
             )(),
+            filteredValue: filteredInfo.value || null,
             onFilter: (value, row) => value === row.value,
             key: 'value',
             textWrap: 'word-break',
@@ -205,45 +256,67 @@ const PackageFindingsTable = ({ webAppPackage }) => {
         {
             dataIndex: 'path',
             defaultSortOrder: 'ascend',
+            filteredValue: filteredInfo.path,
             key: 'path',
             sorter: (a, b) => a.path.localeCompare(b.path),
             textWrap: 'word-break',
-            title: 'Path'
+            title: 'Path',
+            ...getColumnSearchProps('path', filteredInfo.path, (value) => setFilteredInfo({ ...filteredInfo, path: value }))
         },
         {
             align: 'center',
             dataIndex: 'startLine',
             key: 'startLine',
+            filteredValue: filteredInfo.startLine || null,
             responsive: ['md'],
-            title: 'Start'
+            title: 'Start',
+            ...getColumnSearchProps('startLine', filteredInfo.startLine, (value) => setFilteredInfo({ ...filteredInfo, startLine: value }))
         },
         {
             align: 'center',
             dataIndex: 'endLine',
+            filteredValue: filteredInfo.endLine || null,
             key: 'endLine',
             responsive: ['md'],
-            title: 'End'
+            title: 'End',
+            ...getColumnSearchProps('endLine', filteredInfo.endLine, (value) => setFilteredInfo({ ...filteredInfo, endLine: value }))
         }
     );
+
+    // Handle for table pagination changes
+    const handlePaginationChange = (page, pageSize) => {
+        setPagination({ current: page, pageSize });
+    };
+
+    // Handle for any table content changes
+    const handleTableChange = (pagination, filters, sorter) => {
+        setFilteredInfo(filters);
+        setSortedInfo(sorter);
+    };
 
     return (
         <Table
             columns={columns}
             dataSource={findings}
             expandable={expandable}
+            indentSize={0}
+            locale={{
+                emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No findings"></Empty>,
+            }}
+            pagination={{
+                current: pagination.current,
+                hideOnSinglePage: true,
+                pageSize: pagination.pageSize,
+                pageSizeOptions: ['50', '100', '250', '500', '1000', '5000'],
+                position: 'bottom',
+                onChange: handlePaginationChange,
+                showSizeChanger: true,
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
+            }}
+            onChange={handleTableChange}
+            rowClassName="ort-package"
             rowKey="key"
             size="small"
-            pagination={
-                {
-                    defaultPageSize: 250,
-                    hideOnSinglePage: true,
-                    pageSizeOptions: ['50', '100', '250', '500', '1000', '5000'],
-                    position: 'bottom',
-                    showQuickJumper: true,
-                    showSizeChanger: true,
-                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
-                }
-            }
         />
     );
 };

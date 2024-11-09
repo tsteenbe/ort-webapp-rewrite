@@ -37,7 +37,6 @@ function pause(seconds) {
 }
 
 async function loadOrtResultData(setLoadingBarStatus) {
-    console.log("loadOrtResultData");
     // Parse JSON report data embedded in HTML page
     const ortResultDataNode = document.querySelector('script[id="ort-report-data"]');
     let ortResultData;
@@ -84,8 +83,6 @@ async function loadOrtResultData(setLoadingBarStatus) {
             await pause(2);
             setLoadingBarStatus({ percentage: 95, text: 'Processed report data...' });
 
-            console.log("webAppOrtResult", webAppOrtResult);
-
             // Make webAppOrtResult inspectable via Browser's console
             window.ORT = webAppOrtResult;
 
@@ -114,12 +111,10 @@ function App() {
 
     useEffect(() => {
         if (loadingBarStatus.percentage === -2) {
-            console.log('unknown error')
             setCurrentPage('error');
         }
 
         if (loadingBarStatus.percentage === -1) {
-            console.log('loading error')
             setCurrentPage('loading-error');
         }
 

@@ -110,7 +110,6 @@ class WebAppOrtResult {
     #vulnerabilityResolutions = [];
 
     constructor(obj) {
-        console.log("WebAppOrtResult");
         if (obj instanceof Object) {
             if (obj.copyrights) {
                 for (let i = 0, len = obj.copyrights.length; i < len; i++) {
@@ -556,7 +555,7 @@ class WebAppOrtResult {
     }
 
     getTreeNodeByKey(val) {
-        return this.#treeNodesByKeyMap.get(val.toString()) || null;
+        return val.toString() && this.#treeNodesByKeyMap.get(val.toString()) || null;
     }
 
     getTreeNodeParentKeysByIndex(val) {
