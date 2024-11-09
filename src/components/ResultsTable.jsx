@@ -17,8 +17,19 @@
  * License-Filename: LICENSE
  */
 
-import React, { useRef, useState, useEffect } from 'react';
-import { Button, Input, Space, Table } from 'antd';
+import React, {
+    useRef,
+    useState,
+    useEffect
+} from 'react';
+import {
+    Button,
+    Col,
+    Empty,
+    Row,
+    Space,
+    Table
+} from 'antd';
 import {
     CloudDownloadOutlined,
     EyeOutlined,
@@ -39,15 +50,24 @@ import { getColumnSearchProps } from './Shared';
 
 
 // Mock data (in a real-world app, data would come from an API)
+// const fetchDat2 = () => {
+//     return [
+//         { key: '1', name: 'John Doe', age: 32, address: 'New York' },
+//         { key: '2', name: 'Jane Smith', age: 32, address: 'London' },
+//         { key: '3', name: 'Peter Johnson', age: 45, address: 'Sydney' },
+//         { key: '4', name: 'John Brown', age: 32, address: 'Los Angeles' },
+//         { key: '5', name: 'Chris Lee', age: 29, address: 'San Francisco' },
+//         // Add more data as needed
+//     ];
+// };
+
 const fetchData = () => {
-    return [
-        { key: '1', name: 'John Doe', age: 32, address: 'New York' },
-        { key: '2', name: 'Jane Smith', age: 32, address: 'London' },
-        { key: '3', name: 'Peter Johnson', age: 45, address: 'Sydney' },
-        { key: '4', name: 'John Brown', age: 32, address: 'Los Angeles' },
-        { key: '5', name: 'Chris Lee', age: 29, address: 'San Francisco' },
-        // Add more data as needed
-    ];
+    return Array.from({ length: 300 }, (_, index) => ({
+        key: index + 1,
+        name: `Item ${index + 1}`,
+        age: 32 + (index % 30), // just a random age for the sake of example
+        address: `City ${index + 1}`,
+    }))
 };
 
 const ResultsTable = ({ webAppOrtResult }) => {
@@ -55,13 +75,13 @@ const ResultsTable = ({ webAppOrtResult }) => {
     const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
     const [filteredData, setFilteredData] = useState(data);
-    const [sortedInfo, setSortedInfo] = useState({});
-    const filteredValueDefault = {
+    const filteredInfoDefault = {
         name: [],
         age: [],
-        address: [],
+        address: []
     };
-    const [filteredValue, setFilteredValue] = useState(filteredValueDefault );
+    const [filteredInfo, setFilteredInfo] = useState(filteredInfoDefault);
+    const [sortedInfo, setSortedInfo] = useState({});
 
     // Fetch data and set initial data
     useEffect(() => {
@@ -71,65 +91,85 @@ const ResultsTable = ({ webAppOrtResult }) => {
     }, []);
 
     // Handle pagination change
-    const handlePageChange = (page, pageSize) => {
+    const handlePaginationChange = (page, pageSize) => {
         setPagination({ current: page, pageSize });
     };
 
     // Handle sorting
     const handleTableChange = (pagination, filters, sorter) => {
-        console.log('handleTableChange')
+        console.log('handleTableChange', pagination, filters, sorter);
+        setFilteredInfo(filters);
+        setSortedInfo(sorter);
     };
 
     const clearFilters = () => {
         console.log('clearFilters')
-        setFilteredValue(filteredValueDefault);
+        setFilteredInfo(filteredInfoDefault);
     };
+
     const clearAll = () => {
         console.log('clearAll')
-        setFilteredValue(filteredValueDefault);
+        setFilteredInfo(filteredInfoDefault);
         setSortedInfo({});
     };
 
     const columns = [
         {
+            key: 'name',
             title: 'Name',
             dataIndex: 'name',
             sorter: true,
-            ...getColumnSearchProps('name', filteredValue.name, (value) => setFilteredValue({ ...filteredValue, name: value }))
+            sorter: (a, b) => a.name.length - b.name.length,
+            sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
+            ...getColumnSearchProps('name', filteredInfo.name, (value) => setFilteredInfo({ ...filteredInfo, name: value }))
         },
         {
+            key: 'age',
             title: 'Age',
             dataIndex: 'age',
             sorter: true,
-            ...getColumnSearchProps('age', filteredValue.age, (value) => setFilteredValue({ ...filteredValue, age: value }))
+            sorter: (a, b) => a.age - b.age,
+            sortOrder: sortedInfo.columnKey === 'age' ? sortedInfo.order : null,
+            ...getColumnSearchProps('age', filteredInfo.age, (value) => setFilteredInfo({ ...filteredInfo, age: value }))
         },
         {
+            key: 'address',
             title: 'Address',
             dataIndex: 'address',
-            ...getColumnSearchProps('address', filteredValue.address, (value) => setFilteredValue({ ...filteredValue, address: value }))
+            sorter: (a, b) => a.address.length - b.address.length,
+            sortOrder: sortedInfo.columnKey === 'address' ? sortedInfo.order : null,
+            ...getColumnSearchProps('address', filteredInfo.address, (value) => setFilteredInfo({ ...filteredInfo, address: value }))
         },
     ];
 
     return (
         <div>
-            <Space
-                style={{
-                    marginBottom: 16,
-                }}
-            >
-                <Button onClick={clearFilters}>Clear filters</Button>
-                <Button onClick={clearAll}>Clear filters and sorters</Button>
-            </Space>
+            <Row justify="end">
+                <Col>
+                    <Space
+                        style={{
+                            marginBottom: 16,
+                        }}
+                    >
+                        <Button onClick={clearFilters}>Clear filters</Button>
+                        <Button onClick={clearAll}>Clear filters and sorters</Button>
+                    </Space>
+                </Col>
+            </Row>
             <Table
                 columns={columns}
                 dataSource={filteredData}
+                locale={{
+                    emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No packages"></Empty>,
+                }}
                 pagination={{
                     current: pagination.current,
-                    pageSize: pagination.pageSize,
+                    defaultPageSize: 100,
+                    hideOnSinglePage: true,
                     pageSizeOptions: ['50', '100', '250', '500', '1000', '5000'],
                     position: 'both',
-                    showSizeChanger: true,
-                    total: filteredData.length
+                    onChange: handlePaginationChange,
+                    showSizeChanger: true
                 }}
                 onChange={handleTableChange}
                 rowKey="key"

@@ -59,7 +59,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                 {
                                     label: (
                                         <span>
-                                            <PieChartOutlined />
+                                            <PieChartOutlined style={{  marginRight: 5 }}/>
                                             Summary
                                         </span>
                                     ),
@@ -71,7 +71,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                 {
                                     label: (
                                         <span>
-                                            <TableOutlined />
+                                            <TableOutlined style={{  marginRight: 5 }}/>
                                             Table
                                         </span>
                                     ),
@@ -83,7 +83,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                 {
                                     label: (
                                         <span>
-                                            <PartitionOutlined />
+                                            <PartitionOutlined style={{  marginRight: 5 }}/>
                                             Tree
                                         </span>
                                     ),
