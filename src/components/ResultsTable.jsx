@@ -34,7 +34,7 @@ import PackageLicenses from './PackageLicenses';
 import PackagePaths from './PackagePaths';
 import PathExcludesTable from './PathExcludesTable';
 import ScopeExcludesTable from './ScopeExcludesTable';
-import { getColumnSearchProps2, getColumnSearchProps3, getColumnSearchProps4, getColumnSearchProps5 } from './Shared';
+import { getColumnSearchProps } from './Shared';
 
 
 
@@ -42,9 +42,9 @@ import { getColumnSearchProps2, getColumnSearchProps3, getColumnSearchProps4, ge
 const fetchData = () => {
     return [
         { key: '1', name: 'John Doe', age: 32, address: 'New York' },
-        { key: '2', name: 'Jane Smith', age: 28, address: 'London' },
+        { key: '2', name: 'Jane Smith', age: 32, address: 'London' },
         { key: '3', name: 'Peter Johnson', age: 45, address: 'Sydney' },
-        { key: '4', name: 'Mary Brown', age: 36, address: 'Los Angeles' },
+        { key: '4', name: 'John Brown', age: 32, address: 'Los Angeles' },
         { key: '5', name: 'Chris Lee', age: 29, address: 'San Francisco' },
         // Add more data as needed
     ];
@@ -55,13 +55,13 @@ const ResultsTable = ({ webAppOrtResult }) => {
     const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
     const [filteredData, setFilteredData] = useState(data);
-    const [searchText, setSearchText] = useState('');
-    const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
-    const [filteredValue, setFilteredValue] = useState({
+    const filteredValueDefault = {
         name: [],
+        age: [],
         address: [],
-    });
+    };
+    const [filteredValue, setFilteredValue] = useState(filteredValueDefault );
 
     // Fetch data and set initial data
     useEffect(() => {
@@ -69,31 +69,6 @@ const ResultsTable = ({ webAppOrtResult }) => {
         setData(data);
         setFilteredData(data);  // Initialize filtered data with the full data
     }, []);
-
-    const handleColumnSearch = (selectedKeys, confirm, dataIndex) => {
-        console.log('search column');
-        confirm();
-        //setSearchText(selectedKeys[0]);
-        console.log({
-            [dataIndex]: selectedKeys[0] || [],
-            ...filteredInfo
-        });
-        setFilteredInfo({
-            [dataIndex]: selectedKeys[0] || [],
-            ...filteredInfo
-        });
-        console.log('@@@@', selectedKeys, confirm, dataIndex);
-        console.log('filteredInfo', filteredInfo);
-    };
-    const handleColumnReset = (clearFilters) => {
-        console.log('reset column');
-        clearFilters();
-        console.log('filteredInfo', filteredInfo);
-        setSearchText('');
-        setFilteredInfo({ age: null, filteredInfo });
-        console.log('filteredInfo', filteredInfo);
-        console.log('filteredInfo', filteredInfo);
-    };
 
     // Handle pagination change
     const handlePageChange = (page, pageSize) => {
@@ -107,11 +82,11 @@ const ResultsTable = ({ webAppOrtResult }) => {
 
     const clearFilters = () => {
         console.log('clearFilters')
-        setFilteredInfo({});
+        setFilteredValue(filteredValueDefault);
     };
     const clearAll = () => {
         console.log('clearAll')
-        setFilteredInfo({});
+        setFilteredValue(filteredValueDefault);
         setSortedInfo({});
     };
 
@@ -120,17 +95,18 @@ const ResultsTable = ({ webAppOrtResult }) => {
             title: 'Name',
             dataIndex: 'name',
             sorter: true,
+            ...getColumnSearchProps('name', filteredValue.name, (value) => setFilteredValue({ ...filteredValue, name: value }))
         },
         {
             title: 'Age',
             dataIndex: 'age',
             sorter: true,
-            ...getColumnSearchProps4('age', filteredInfo, handleColumnSearch, handleColumnReset)
+            ...getColumnSearchProps('age', filteredValue.age, (value) => setFilteredValue({ ...filteredValue, age: value }))
         },
         {
             title: 'Address',
             dataIndex: 'address',
-            ...getColumnSearchProps5('address', filteredValue.address, (value) => setFilteredValue({ ...filteredValue, address: value }))
+            ...getColumnSearchProps('address', filteredValue.address, (value) => setFilteredValue({ ...filteredValue, address: value }))
         },
     ];
 
@@ -150,7 +126,10 @@ const ResultsTable = ({ webAppOrtResult }) => {
                 pagination={{
                     current: pagination.current,
                     pageSize: pagination.pageSize,
-                    total: filteredData.length,
+                    pageSizeOptions: ['50', '100', '250', '500', '1000', '5000'],
+                    position: 'both',
+                    showSizeChanger: true,
+                    total: filteredData.length
                 }}
                 onChange={handleTableChange}
                 rowKey="key"
