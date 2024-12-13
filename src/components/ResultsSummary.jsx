@@ -17,10 +17,8 @@
  * License-Filename: LICENSE
  */
 
-
-import React, {
-    useMemo,
-    useState
+import {
+    useMemo
 } from 'react';
 
 import {
@@ -32,7 +30,6 @@ import {
     SecurityScanOutlined,
     TagsOutlined
 } from '@ant-design/icons';
-
 import {
     Col, Row, Tabs, Timeline
 } from 'antd';
@@ -72,8 +69,7 @@ const ResultsSummary = ({ webAppOrtResult }) => {
     const hasUnresolvedIssues = unresolvedIssues > 0;
     const hasUnresolvedRuleViolations = unresolvedRuleViolations > 0;
 
-
-    const declaredLicensesProcessedAsNameValueColor =  useMemo(
+    const declaredLicensesProcessedAsNameValueColor = useMemo(
         () => {
             const licenses = [];
             const {
@@ -101,7 +97,7 @@ const ResultsSummary = ({ webAppOrtResult }) => {
         []
     );
 
-    const detectedLicensesProcessedAsNameValueColor =  useMemo(
+    const detectedLicensesProcessedAsNameValueColor = useMemo(
         () => {
             const licenses = [];
             const {
@@ -130,21 +126,23 @@ const ResultsSummary = ({ webAppOrtResult }) => {
     );
 
     const charts = {
-        declaredLicensesProcessed: declaredLicensesProcessedAsNameValueColor.length !== 0 ?
-            declaredLicensesProcessedAsNameValueColor : [],
-        detectedLicensesProcessed: detectedLicensesProcessedAsNameValueColor.length !== 0 ?
-            detectedLicensesProcessedAsNameValueColor : []
+        declaredLicensesProcessed: declaredLicensesProcessedAsNameValueColor.length !== 0
+            ? declaredLicensesProcessedAsNameValueColor
+            : [],
+        detectedLicensesProcessed: detectedLicensesProcessedAsNameValueColor.length !== 0
+            ? detectedLicensesProcessedAsNameValueColor
+            : []
     };
 
-    const columns =  useMemo(
+    const columns = useMemo(
         () => {
-    
+
         },
         []
     );
-    const stats =  useMemo(
+    const stats = useMemo(
         () => {
-    
+
         },
         []
     );
@@ -393,7 +391,7 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                         {
                                             label: (
                                                 <span>
-                                                    <ExceptionOutlined style={{  marginRight: 5 }}/>
+                                                    <ExceptionOutlined style={{ marginRight: 5 }}/>
                                                     Rule Violations (
                                                     {
                                                         ruleViolations.length !== unresolvedRuleViolations
@@ -414,7 +412,7 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                         {
                                             label: (
                                                 <span>
-                                                    <BugOutlined style={{  marginRight: 5 }}/>
+                                                    <BugOutlined style={{ marginRight: 5 }}/>
                                                     Issues (
                                                     {
                                                         issues.length !== unresolvedIssues
@@ -435,7 +433,7 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                         {
                                             label: (
                                                 <span>
-                                                    <SecurityScanOutlined style={{  marginRight: 5 }}/>
+                                                    <SecurityScanOutlined style={{ marginRight: 5 }}/>
                                                     Vulnerabilities (
                                                     {vulnerabilities.length}
                                                     )

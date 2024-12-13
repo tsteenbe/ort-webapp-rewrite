@@ -17,26 +17,20 @@
  * License-Filename: LICENSE
  */
 
-
-import React, {
+import {
     useMemo,
     useState
 } from 'react';
 
 import {
-    ArrowDownOutlined,
-    ArrowUpOutlined,
     FileAddOutlined,
     FileExcelOutlined
 } from '@ant-design/icons';
-
 import {
-    Button,
     Collapse,
     Drawer,
     Input,
     message,
-    Row,
     Tree
 } from 'antd';
 
@@ -103,7 +97,7 @@ const ResultsTree = ({ webAppOrtResult }) => {
     const handleSelectTreeNode = (selectedKeys) => {
         if (selectedKeys[0]) {
             const treeNode = webAppOrtResult.getTreeNodeByKey(selectedKeys[0]);
-            if (!!treeNode){
+            if (treeNode) {
                 setSelectedWebAppTreeNode(treeNode);
                 setDrawerOpen(true);
             }
@@ -121,25 +115,27 @@ const ResultsTree = ({ webAppOrtResult }) => {
                 const beforeStr = strTitle.substring(0, index);
                 const afterStr = strTitle.slice(index + searchValue.length);
                 const title =
-                    index > -1 && searchValue !== '' ? (
+                    index > -1 && searchValue !== ''
+                        ? (
                         <span key={item.key} style={{ color: '#1677ff' }}>
                             {beforeStr}
                             <b>{searchValue}</b>
                             {afterStr}
                         </span>
-                    ) : (
+                            )
+                        : (
                         <span key={item.key}>{strTitle}</span>
-                    );
+                            );
                 if (item.children) {
                     return {
                         title,
                         key: item.key,
-                        children: loop(item.children),
+                        children: loop(item.children)
                     };
                 }
                 return {
                     title,
-                    key: item.key,
+                    key: item.key
                 };
             });
         return loop(dependencyTrees);
@@ -150,10 +146,10 @@ const ResultsTree = ({ webAppOrtResult }) => {
             <div className="ort-tree-search">
                 <Search
                     placeholder="Search package id and press Enter"
-                    onPressEnter={handleSearchChange}
                     style={{
-                        marginBottom: 8,
+                        marginBottom: 8
                     }}
+                    onPressEnter={handleSearchChange}
                 />
             </div>
             <div className="ort-tree-wrapper">
@@ -161,10 +157,10 @@ const ResultsTree = ({ webAppOrtResult }) => {
                     autoExpandParent={autoExpandParent}
                     expandedKeys={expandedKeys}
                     selectedKeys={selectedKeys}
-                    onExpand={handleTreeExpand}
-                    onSelect={handleSelectTreeNode}
                     showLine={true}
                     treeData={treeData}
+                    onExpand={handleTreeExpand}
+                    onSelect={handleSelectTreeNode}
                 />
             </div>
             <div>

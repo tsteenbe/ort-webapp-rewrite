@@ -17,7 +17,7 @@
  * License-Filename: LICENSE
  */
 
-import React, {
+import {
     useMemo,
     useState
 } from 'react';
@@ -30,7 +30,6 @@ import {
     IssuesCloseOutlined,
     WarningOutlined
 } from '@ant-design/icons';
-
 import { Collapse, Table, Tooltip } from 'antd';
 import Markdown from 'markdown-to-jsx';
 
@@ -58,7 +57,7 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
                         rule: webAppRuleViolation.rule,
                         severity: webAppRuleViolation.severity,
                         severityIndex: webAppRuleViolation.severityIndex,
-                        webAppRuleViolation: webAppRuleViolation
+                        webAppRuleViolation
                     })
                 )
         },
@@ -227,7 +226,11 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             sortOrder: sortedInfo.field === 'packageName' && sortedInfo.order,
             title: 'Package',
             width: '25%',
-            ...getColumnSearchProps('packageName', filteredInfo.packageName, (value) => setFilteredInfo({ ...filteredInfo, packageName: value }))
+            ...getColumnSearchProps(
+                'packageName',
+                filteredInfo.packageName,
+                (value) => setFilteredInfo({ ...filteredInfo, packageName: value })
+            )
         },
         {
             dataIndex: 'rule',
@@ -237,14 +240,22 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             sortOrder: sortedInfo.field === 'rule' && sortedInfo.order,
             title: 'Rule',
             width: '25%',
-            ...getColumnSearchProps('rule', filteredInfo.rule, (value) => setFilteredInfo({ ...filteredInfo, rule: value }))
+            ...getColumnSearchProps(
+                'rule',
+                filteredInfo.rule,
+                (value) => setFilteredInfo({ ...filteredInfo, rule: value })
+            )
         },
         {
             dataIndex: 'message',
             key: 'message',
             textWrap: 'word-break',
             title: 'Message',
-            ...getColumnSearchProps('message', filteredInfo.message, (value) => setFilteredInfo({ ...filteredInfo, message: value }))
+            ...getColumnSearchProps(
+                'message',
+                filteredInfo.message,
+                (value) => setFilteredInfo({ ...filteredInfo, message: value })
+            )
         }
     );
 
@@ -264,6 +275,8 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             className="ort-table-rule-violations"
             columns={columns}
             dataSource={violations}
+            rowKey="key"
+            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     let defaultActiveKey = [0];
@@ -381,7 +394,6 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             locale={{
                 emptyText: 'No violations'
             }}
-            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -394,8 +406,7 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} violations`
                 }
             }
-            rowKey="key"
-            size="small"
+            onChange={handleTableChange}
         />
     );
 }

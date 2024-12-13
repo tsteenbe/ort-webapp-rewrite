@@ -33,9 +33,9 @@ const getColumnSearchProps = (dataIndex, filteredValue, setFilteredValue) => ({
             <Input
                 placeholder={`Search ${dataIndex}`}
                 value={selectedKeys[0]}
+                style={{ marginBottom: 8, display: 'block' }}
                 onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                 onPressEnter={() => confirm()}
-                style={{ marginBottom: 8, display: 'block' }}
             />
             <Space>
                 <Button
@@ -50,11 +50,11 @@ const getColumnSearchProps = (dataIndex, filteredValue, setFilteredValue) => ({
                     Search
                 </Button>
                 <Button
+                    size="small"
                     onClick={() => {
                         clearFilters && clearFilters();
                         setFilteredValue([]);
                     }}
-                    size="small"
                 >
                     Reset
                 </Button>
@@ -63,7 +63,7 @@ const getColumnSearchProps = (dataIndex, filteredValue, setFilteredValue) => ({
     ),
     filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (searchStr, record) => {
-        console.log("value/record", searchStr, record);
+        console.log('value/record', searchStr, record);
         // return record[dataIndex]
         //     ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
         //     : false;
@@ -81,7 +81,7 @@ const getColumnSearchProps = (dataIndex, filteredValue, setFilteredValue) => ({
 
         return !searchStrValues.every(value => !recordValue.includes(value));
     },
-    render: (text) => text,
+    render: (text) => text
 });
 
 export { getColumnSearchProps };

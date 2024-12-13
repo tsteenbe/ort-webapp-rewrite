@@ -17,21 +17,10 @@
  * License-Filename: LICENSE
  */
 
-
-import React, {
+import {
     useMemo,
     useState
 } from 'react';
-
-import {
-    Col,
-    Collapse,
-    Dropdown,
-    Empty,
-    Row,
-    Space,
-    Table
-} from 'antd';
 
 import {
     CloudDownloadOutlined,
@@ -40,8 +29,18 @@ import {
     EyeInvisibleOutlined,
     FileAddOutlined,
     FileExcelOutlined,
-    LaptopOutlined,
+    LaptopOutlined
 } from '@ant-design/icons';
+import {
+    Col,
+    Collapse,
+    Dropdown,
+    Empty,
+    Row,
+    Space,
+    Table,
+    Tooltip
+} from 'antd';
 
 import PackageDetails from './PackageDetails';
 import PackageFindingsTable from './PackageFindingsTable';
@@ -50,7 +49,6 @@ import PackagePaths from './PackagePaths';
 import PathExcludesTable from './PathExcludesTable';
 import ScopeExcludesTable from './ScopeExcludesTable';
 import { getColumnSearchProps } from './Shared';
-
 
 const ResultsTable = ({ webAppOrtResult }) => {
     // Convert packages as Antd only accepts vanilla objects as input
@@ -325,10 +323,10 @@ const ResultsTable = ({ webAppOrtResult }) => {
                                 <FileExcelOutlined className="ort-excluded" />
                             </Tooltip>
                         </span>
-                    )
+                        )
                     : (
                         <FileAddOutlined />
-                    )
+                        )
             ),
             width: '2em'
         });
@@ -499,7 +497,11 @@ const ResultsTable = ({ webAppOrtResult }) => {
             sortOrder: sortedInfo.field === 'homepageUrl' && sortedInfo.order,
             textWrap: 'word-break',
             title: 'Homepage',
-            ...getColumnSearchProps('homepageUrl', filteredInfo.homepageUrl, (value) => setFilteredInfo({ ...filteredInfo, homepageUrl: value }))
+            ...getColumnSearchProps(
+                'homepageUrl',
+                filteredInfo.homepageUrl,
+                (value) => setFilteredInfo({ ...filteredInfo, homepageUrl: value })
+            )
         });
     }
 
@@ -513,7 +515,11 @@ const ResultsTable = ({ webAppOrtResult }) => {
             sortOrder: sortedInfo.field === 'vcsProcessedUrl' && sortedInfo.order,
             textWrap: 'word-break',
             title: 'Repository',
-            ...getColumnSearchProps('vcsProcessedUrl', filteredInfo.vcsProcessedUrl, (value) => setFilteredInfo({ ...filteredInfo, vcsProcessedUrl: value }))
+            ...getColumnSearchProps(
+                'vcsProcessedUrl',
+                filteredInfo.vcsProcessedUrl,
+                (value) => setFilteredInfo({ ...filteredInfo, vcsProcessedUrl: value })
+            )
         });
     }
 
@@ -535,10 +541,10 @@ const ResultsTable = ({ webAppOrtResult }) => {
                         >
                             <LaptopOutlined />
                         </Tooltip>
-                    )
+                        )
                     : (
                         <CloudDownloadOutlined />
-                    )
+                        )
             ),
             title: 'Project',
             width: 85
@@ -588,11 +594,12 @@ const ResultsTable = ({ webAppOrtResult }) => {
                 <Col>
                     <Space
                         style={{
-                            marginBottom: 16,
+                            marginBottom: 16
                         }}
                     >
                         <Dropdown.Button
                             icon={<EyeOutlined />}
+                            size="small"
                             menu={{
                                 className: 'ort-table-toggle-columns',
                                 items: toggleColumnMenuItems.map(
@@ -615,7 +622,6 @@ const ResultsTable = ({ webAppOrtResult }) => {
                                 selectedKeys: columnsToShow
                             }}
                             onClick={handleClearAllFiltersAndSorting}
-                            size="small"
                         >
                             <DeleteOutlined />
                             Clear filters and sorters
@@ -626,6 +632,10 @@ const ResultsTable = ({ webAppOrtResult }) => {
             <Table
                 columns={columns}
                 dataSource={packages}
+                indentSize={0}
+                rowClassName="ort-package"
+                rowKey="key"
+                size="small"
                 expandable={{
                     expandedRowRender: (pkg) => {
                         const webAppPackage = webAppOrtResult.getPackageByKey(pkg.key);
@@ -708,11 +718,9 @@ const ResultsTable = ({ webAppOrtResult }) => {
                     },
                     expandRowByClick: true
                 }}
-                indentSize={0}
                 locale={{
-                    emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No packages"></Empty>,
+                    emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No packages"></Empty>
                 }}
-                onChange={handleTableChange}
                 pagination={{
                     current: pagination.current,
                     hideOnSinglePage: true,
@@ -722,9 +730,7 @@ const ResultsTable = ({ webAppOrtResult }) => {
                     position: 'both',
                     showSizeChanger: true
                 }}
-                rowClassName="ort-package"
-                rowKey="key"
-                size="small"
+                onChange={handleTableChange}
             />
         </div>
     );

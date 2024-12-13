@@ -22,10 +22,13 @@ import {
     useRef,
     useState
 } from 'react';
+
+import pako from 'pako';
+
 import WebAppOrtResult from './models/WebAppOrtResult';
 import AppPage from './pages/AppPage';
-import LoadingPage from './pages/LoadingPage';
 import ErrorPage from './pages/ErrorPage';
+import LoadingPage from './pages/LoadingPage';
 import './App.css';
 
 let webAppOrtResult;

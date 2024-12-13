@@ -17,7 +17,7 @@
  * License-Filename: LICENSE
  */
 
-import React, {
+import {
     useMemo,
     useState
 } from 'react';
@@ -132,10 +132,10 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                                 <FileExcelOutlined className="ort-excluded" />
                             </Tooltip>
                         </span>
-                    )
+                        )
                     : (
                         <FileAddOutlined />
-                    )
+                        )
             ),
             width: '2em'
         });
@@ -157,10 +157,10 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                     expanded
                         ? (
                             <MinusSquareOutlined onClick={(e) => onExpand(record, e)} />
-                        )
+                            )
                         : (
                             <PlusSquareOutlined onClick={(e) => onExpand(record, e)} />
-                        )
+                            )
                 );
             },
             indentSize: 0
@@ -261,7 +261,11 @@ const PackageFindingsTable = ({ webAppPackage }) => {
             sorter: (a, b) => a.path.localeCompare(b.path),
             textWrap: 'word-break',
             title: 'Path',
-            ...getColumnSearchProps('path', filteredInfo.path, (value) => setFilteredInfo({ ...filteredInfo, path: value }))
+            ...getColumnSearchProps(
+                'path',
+                filteredInfo.path,
+                (value) => setFilteredInfo({ ...filteredInfo, path: value })
+            )
         },
         {
             align: 'center',
@@ -270,7 +274,11 @@ const PackageFindingsTable = ({ webAppPackage }) => {
             filteredValue: filteredInfo.startLine || null,
             responsive: ['md'],
             title: 'Start',
-            ...getColumnSearchProps('startLine', filteredInfo.startLine, (value) => setFilteredInfo({ ...filteredInfo, startLine: value }))
+            ...getColumnSearchProps(
+                'startLine',
+                filteredInfo.startLine,
+                (value) => setFilteredInfo({ ...filteredInfo, startLine: value })
+            )
         },
         {
             align: 'center',
@@ -279,7 +287,11 @@ const PackageFindingsTable = ({ webAppPackage }) => {
             key: 'endLine',
             responsive: ['md'],
             title: 'End',
-            ...getColumnSearchProps('endLine', filteredInfo.endLine, (value) => setFilteredInfo({ ...filteredInfo, endLine: value }))
+            ...getColumnSearchProps(
+                'endLine',
+                filteredInfo.endLine,
+                (value) => setFilteredInfo({ ...filteredInfo, endLine: value })
+            )
         }
     );
 
@@ -300,8 +312,11 @@ const PackageFindingsTable = ({ webAppPackage }) => {
             dataSource={findings}
             expandable={expandable}
             indentSize={0}
+            rowClassName="ort-package"
+            rowKey="key"
+            size="small"
             locale={{
-                emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No findings"></Empty>,
+                emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No findings"></Empty>
             }}
             pagination={{
                 current: pagination.current,
@@ -314,9 +329,6 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
             }}
             onChange={handleTableChange}
-            rowClassName="ort-package"
-            rowKey="key"
-            size="small"
         />
     );
 };

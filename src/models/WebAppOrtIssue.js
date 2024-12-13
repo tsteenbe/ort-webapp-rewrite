@@ -161,6 +161,10 @@ class WebAppOrtIssue {
         return this.#scanResult;
     }
 
+    get scanResultIndex() {
+        return this.#scanResultIndex;
+    }
+
     get severity() {
         return this.#severity;
     }

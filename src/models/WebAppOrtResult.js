@@ -555,7 +555,7 @@ class WebAppOrtResult {
     }
 
     getTreeNodeByKey(val) {
-        return val.toString() && this.#treeNodesByKeyMap.get(val.toString()) || null;
+        return (val.toString() && this.#treeNodesByKeyMap.get(val.toString())) || null;
     }
 
     getTreeNodeParentKeysByIndex(val) {

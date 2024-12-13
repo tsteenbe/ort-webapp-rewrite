@@ -17,7 +17,7 @@
  * License-Filename: LICENSE
  */
 
-import React, {
+import {
     useMemo,
     useState
 } from 'react';
@@ -33,8 +33,7 @@ import {
     QuestionCircleOutlined,
     WarningOutlined
 } from '@ant-design/icons';
-
-import {Collapse, Table, Tooltip } from 'antd';
+import { Collapse, Table, Tooltip } from 'antd';
 
 import PackageDetails from './PackageDetails';
 import PackagePaths from './PackagePaths';
@@ -44,7 +43,7 @@ import ScopeExcludesTable from './ScopeExcludesTable';
 import { getColumnSearchProps } from './Shared';
 
 // Generates the HTML to display vulnerabilities as a Table
-const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn = true }) => {
+const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn = true }) => {
     // Convert issues as Antd only accepts vanilla objects as input
     const vulnerabilities = useMemo(
         () => {
@@ -57,7 +56,7 @@ const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn 
                         packageName: webAppVulnerability.package.id,
                         severity: webAppVulnerability.severity,
                         severityIndex: webAppVulnerability.severityIndex,
-                        webAppVulnerability: webAppVulnerability
+                        webAppVulnerability
                     })
                 )
         },
@@ -248,7 +247,11 @@ const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn 
             sorter: (a, b) => a.packageName.localeCompare(b.packageName),
             sortOrder: sortedInfo.field === 'packageName' && sortedInfo.order,
             title: 'Package',
-            ...getColumnSearchProps('packageName', filteredInfo.packageName, (value) => setFilteredInfo({ ...filteredInfo, packageName: value }))
+            ...getColumnSearchProps(
+                'packageName',
+                filteredInfo.packageName,
+                (value) => setFilteredInfo({ ...filteredInfo, packageName: value })
+            )
         },
         {
             dataIndex: 'id',
@@ -257,7 +260,11 @@ const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn 
             sorter: (a, b) => a.id.localeCompare(b.id),
             sortOrder: sortedInfo.field === 'id' && sortedInfo.order,
             title: 'Id',
-            ...getColumnSearchProps('id', filteredInfo.id, (value) => setFilteredInfo({ ...filteredInfo, id: value }))
+            ...getColumnSearchProps(
+                'id',
+                filteredInfo.id,
+                (value) => setFilteredInfo({ ...filteredInfo, id: value })
+            )
         },
         {
             dataIndex: 'references',
@@ -322,6 +329,8 @@ const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn 
             className="ort-table-vulnerabilities"
             columns={columns}
             dataSource={vulnerabilities}
+            rowKey="key"
+            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     const defaultActiveKey = record.isResolved
@@ -401,7 +410,6 @@ const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn 
             locale={{
                 emptyText: 'No vulnerabilities'
             }}
-            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -414,8 +422,7 @@ const VulnerabilitiesTable = ({  webAppVulnerabilities = [], showExcludesColumn 
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} issues`
                 }
             }
-            rowKey="key"
-            size="small"
+            onChange={handleTableChange}
         />
     );
 }

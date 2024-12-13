@@ -17,23 +17,24 @@
  * License-Filename: LICENSE
  */
 
-import React, { useState } from 'react';
-import {
-    Col,
-    Layout,
-    Row,
-    Tabs
-} from 'antd';
+import { useState } from 'react';
+
 import {
     ControlOutlined,
     PartitionOutlined,
     PieChartOutlined,
     TableOutlined
 } from '@ant-design/icons';
+import {
+    Col,
+    Layout,
+    Row,
+    Tabs
+} from 'antd';
 
-import ResultsSummary from './../components/ResultsSummary';
-import ResultsTable from './../components/ResultsTable';
-import ResultsTree from './../components/ResultsTree';
+import ResultsSummary from '../components/ResultsSummary';
+import ResultsTable from '../components/ResultsTable';
+import ResultsTree from '../components/ResultsTree';
 
 const { Content } = Layout;
 
@@ -59,7 +60,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                 {
                                     label: (
                                         <span>
-                                            <PieChartOutlined style={{  marginRight: 5 }}/>
+                                            <PieChartOutlined style={{ marginRight: 5 }}/>
                                             Summary
                                         </span>
                                     ),
@@ -71,7 +72,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                 {
                                     label: (
                                         <span>
-                                            <TableOutlined style={{  marginRight: 5 }}/>
+                                            <TableOutlined style={{ marginRight: 5 }}/>
                                             Table
                                         </span>
                                     ),
@@ -83,7 +84,7 @@ const AppPage = ({ webAppOrtResult }) => {
                                 {
                                     label: (
                                         <span>
-                                            <PartitionOutlined style={{  marginRight: 5 }}/>
+                                            <PartitionOutlined style={{ marginRight: 5 }}/>
                                             Tree
                                         </span>
                                     ),

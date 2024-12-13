@@ -34,6 +34,7 @@ const ErrorPage = ({ message, submessage }) => (
                     <Alert
                         message={ message }
                         type="error"
+                        showIcon={true}
                         description={(
                             <div>
                                 <p>
@@ -53,7 +54,6 @@ const ErrorPage = ({ message, submessage }) => (
                                 </p>
                             </div>
                         )}
-                        showIcon
                     />
                 </Col>
             </Row>

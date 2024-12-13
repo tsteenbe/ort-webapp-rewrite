@@ -47,10 +47,10 @@ const LoadingPage = ({ status }) => {
                         {percentage === 100
                             ? (
                                 <Progress percent={100} />
-                            )
+                                )
                             : (
                                 <Progress percent={percentage} status="active" />
-                            )}
+                                )}
                     </Col>
 
                 </Row>
