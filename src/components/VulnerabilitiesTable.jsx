@@ -42,7 +42,7 @@ import ResolutionTable from './ResolutionTable';
 import ScopeExcludesTable from './ScopeExcludesTable';
 import { getColumnSearchProps } from './Shared';
 
-// Generates the HTML to display vulnerabilities as a Table
+// Generates the HTML to display vulnerabilities as a table
 const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn = true }) => {
     // Convert issues as Antd only accepts vanilla objects as input
     const vulnerabilities = useMemo(
@@ -329,8 +329,6 @@ const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn =
             className="ort-table-vulnerabilities"
             columns={columns}
             dataSource={vulnerabilities}
-            rowKey="key"
-            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     const defaultActiveKey = record.isResolved
@@ -410,6 +408,7 @@ const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn =
             locale={{
                 emptyText: 'No vulnerabilities'
             }}
+            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -422,7 +421,8 @@ const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn =
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} issues`
                 }
             }
-            onChange={handleTableChange}
+            rowKey="key"
+            size="small"
         />
     );
 }

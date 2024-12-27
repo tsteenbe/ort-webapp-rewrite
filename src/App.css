@@ -45,6 +45,10 @@
     font-size: 0.7em;
 }
 
+.ort-package-collapse .ort-how-to-fix li {
+    line-height: 1.3em;
+}
+
 /* === Styling for PackagePaths === */
 
 .ort-package-path .ant-steps-item .ant-steps-item-content {

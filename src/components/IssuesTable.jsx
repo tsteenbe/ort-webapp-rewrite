@@ -42,7 +42,7 @@ import ResolutionTable from './ResolutionTable';
 import ScopeExcludesTable from './ScopeExcludesTable';
 import { getColumnSearchProps } from './Shared';
 
-// Generates the HTML to display issues as a Table
+// Generates the HTML to display issues as a table
 const IssuesTable = ({ webAppOrtIssues = [], showExcludesColumn = true }) => {
     // Convert issues as Antd only accepts vanilla objects as input
     const issues = useMemo(
@@ -277,8 +277,6 @@ const IssuesTable = ({ webAppOrtIssues = [], showExcludesColumn = true }) => {
             className="ort-table-issues"
             columns={columns}
             dataSource={issues}
-            rowKey="key"
-            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     let defaultActiveKey = [0];
@@ -396,6 +394,7 @@ const IssuesTable = ({ webAppOrtIssues = [], showExcludesColumn = true }) => {
             locale={{
                 emptyText: 'No issues'
             }}
+            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -408,7 +407,8 @@ const IssuesTable = ({ webAppOrtIssues = [], showExcludesColumn = true }) => {
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} issues`
                 }
             }
-            onChange={handleTableChange}
+            rowKey="key"
+            size="small"
         />
     );
 }

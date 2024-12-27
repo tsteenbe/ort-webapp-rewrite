@@ -39,7 +39,7 @@ import {
 import PathExcludesTable from './PathExcludesTable';
 import { getColumnSearchProps } from './Shared';
 
-// Generates the HTML to display scanFindings as a Table
+// Generates the HTML to display scanFindings as a table
 const PackageFindingsTable = ({ webAppPackage }) => {
     // Convert scan findings as Antd only accepts vanilla objects as input
     const findings = useMemo(
@@ -312,23 +312,23 @@ const PackageFindingsTable = ({ webAppPackage }) => {
             dataSource={findings}
             expandable={expandable}
             indentSize={0}
-            rowClassName="ort-package"
-            rowKey="key"
-            size="small"
             locale={{
                 emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No findings"></Empty>
             }}
             pagination={{
                 current: pagination.current,
                 hideOnSinglePage: true,
+                onChange: handlePaginationChange,
                 pageSize: pagination.pageSize,
                 pageSizeOptions: ['50', '100', '250', '500', '1000', '5000'],
                 position: 'bottom',
-                onChange: handlePaginationChange,
                 showSizeChanger: true,
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
             }}
             onChange={handleTableChange}
+            rowClassName="ort-package"
+            rowKey="key"
+            size="small"
         />
     );
 };

@@ -125,28 +125,6 @@ const ResultsSummary = ({ webAppOrtResult }) => {
         []
     );
 
-    const charts = {
-        declaredLicensesProcessed: declaredLicensesProcessedAsNameValueColor.length !== 0
-            ? declaredLicensesProcessedAsNameValueColor
-            : [],
-        detectedLicensesProcessed: detectedLicensesProcessedAsNameValueColor.length !== 0
-            ? detectedLicensesProcessedAsNameValueColor
-            : []
-    };
-
-    const columns = useMemo(
-        () => {
-
-        },
-        []
-    );
-    const stats = useMemo(
-        () => {
-
-        },
-        []
-    );
-
     return (
         <div className="ort-summary">
             <Row>
@@ -449,8 +427,6 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                         }
                                     ];
 
-                                    /*
-
                                     if (webAppOrtResult.hasDeclaredLicensesProcessed()) {
                                         tabItems.push({
                                             label: (
@@ -467,16 +443,12 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                                     <Col xs={24} sm={24} md={24} lg={24} xl={9}>
                                                         <LicenseStatsTable
                                                             emptyText="No declared licenses"
-                                                            filter={columns.declaredLicensesProcessed}
                                                             licenses={declaredLicensesProcessed}
-                                                            licenseStats={stats.declaredLicensesProcessed}
-                                                            onChange={
-                                                                SummaryView.onChangeDeclaredLicensesTable
-                                                            }
+                                                            licenseStats={declaredLicensesProcessedAsNameValueColor}
                                                         />
                                                     </Col>
                                                     <Col xs={24} sm={24} md={24} lg={24} xl={15}>
-                                                        <LicenseChart licenses={charts.declaredLicensesProcessed} />
+                                                        <LicenseChart licenses={declaredLicensesProcessedAsNameValueColor} />
                                                     </Col>
                                                 </Row>
                                             )
@@ -499,21 +471,17 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                                     <Col xs={24} sm={24} md={24} lg={24} xl={9}>
                                                         <LicenseStatsTable
                                                             emptyText="No detected licenses"
-                                                            filter={columns.detectedLicensesProcessed}
                                                             licenses={detectedLicensesProcessed}
-                                                            licenseStats={stats.detectedLicensesProcessed}
-                                                            onChange={SummaryView.onChangeDetectedLicensesTable}
+                                                            licenseStats={detectedLicensesProcessedAsNameValueColor}
                                                         />
                                                     </Col>
                                                     <Col xs={24} sm={24} md={24} lg={24} xl={15}>
-                                                        <LicenseChart licenses={charts.detectedLicensesProcessed} />
+                                                        <LicenseChart licenses={detectedLicensesProcessedAsNameValueColor} />
                                                     </Col>
                                                 </Row>
                                             )
                                         });
                                     }
-
-                                    */
 
                                     return tabItems;
                                 })()}

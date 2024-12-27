@@ -30,7 +30,7 @@ import PropTypes from 'prop-types';
 
 import PathExcludesTable from './PathExcludesTable';
 
-// Generates the HTML to display scanFindings as a Table
+// Generates the HTML to display scanFindings as a table
 const PackageFindingsTable = ({ webAppPackage }) => {
     const { findings } = webAppPackage;
     const columns = [];

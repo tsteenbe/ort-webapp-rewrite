@@ -42,7 +42,7 @@ import ResolutionTable from './ResolutionTable';
 import ScopeExcludesTable from './ScopeExcludesTable';
 import { getColumnSearchProps } from './Shared';
 
-// Generates the HTML to display violations as a Table
+// Generates the HTML to display violations as a table
 const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = true }) => {
     // Convert rule violations as Antd only accepts vanilla objects as input
     const violations = useMemo(
@@ -275,8 +275,6 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             className="ort-table-rule-violations"
             columns={columns}
             dataSource={violations}
-            rowKey="key"
-            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     let defaultActiveKey = [0];
@@ -394,6 +392,7 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             locale={{
                 emptyText: 'No violations'
             }}
+            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -406,7 +405,8 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} violations`
                 }
             }
-            onChange={handleTableChange}
+            rowKey="key"
+            size="small"
         />
     );
 }

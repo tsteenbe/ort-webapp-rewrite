@@ -20,7 +20,7 @@
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
 
-// Generates the HTML to display webAppPathExclude(s) as a Table
+// Generates the HTML to display webAppPathExclude(s) as a table
 const PathExcludesTable = ({ excludes }) => {
     const columns = [
         {
