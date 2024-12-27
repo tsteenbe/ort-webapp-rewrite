@@ -45,6 +45,8 @@ const PathExcludesTable = ({ excludes }) => {
         <Table
             columns={columns}
             dataSource={excludes}
+            rowKey="key"
+            size="small"
             locale={{
                 emptyText: 'No path excludes'
             }}
@@ -59,8 +61,6 @@ const PathExcludesTable = ({ excludes }) => {
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
                 }
             }
-            rowKey="key"
-            size="small"
         />
     );
 };

@@ -275,6 +275,8 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             className="ort-table-rule-violations"
             columns={columns}
             dataSource={violations}
+            rowKey="key"
+            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     let defaultActiveKey = [0];
@@ -392,7 +394,6 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
             locale={{
                 emptyText: 'No violations'
             }}
-            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -405,8 +406,7 @@ const RuleViolationsTable = ({ webAppRuleViolations = [], showExcludesColumn = t
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} violations`
                 }
             }
-            rowKey="key"
-            size="small"
+            onChange={handleTableChange}
         />
     );
 }

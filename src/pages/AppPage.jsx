@@ -32,6 +32,7 @@ import {
     Tabs
 } from 'antd';
 
+import AboutModal from '../components/AboutModal';
 import ResultsSummary from '../components/ResultsSummary';
 import ResultsTable from '../components/ResultsTable';
 import ResultsTree from '../components/ResultsTree';
@@ -40,8 +41,14 @@ const { Content } = Layout;
 
 const AppPage = ({ webAppOrtResult }) => {
     const [activeTab, setActiveTab] = useState('ort-tabs-summary');
+    const [isAboutModalVisible, setIsAboutModalVisible] = useState(false);
 
     const handleAboutClick = (key) => {
+        setIsAboutModalVisible(true);
+    };
+
+    const handleAboutModalCancel = () => {
+        setIsAboutModalVisible(false);
     };
 
     const handleTabChange = (key) => {
@@ -53,6 +60,14 @@ const AppPage = ({ webAppOrtResult }) => {
             <Content>
                 <Row align="top" style={{ minHeight: '100vh' }}>
                     <Col span={24}>
+                        {
+                            !!isAboutModalVisible
+                            && <AboutModal 
+                                webAppOrtResult={webAppOrtResult}
+                                isModalVisible={isAboutModalVisible}
+                                handleModalCancel={handleAboutModalCancel}
+                            />
+                        }
                         <Tabs
                             activeKey={activeTab}
                             animated={false}

@@ -431,10 +431,8 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                         tabItems.push({
                                             label: (
                                                 <span>
-                                                    <TagsOutlined style={{  marginRight: 5 }}/>
-                                                    Declared Licenses (
-                                                    {declaredLicensesProcessed.length}
-                                                    )
+                                                    <TagsOutlined style={{ marginRight: 5 }}/>
+                                                    Declared Licenses ({declaredLicensesProcessed.length})
                                                 </span>
                                             ),
                                             key: 'ort-summary-declared-licenses-table',
@@ -448,7 +446,9 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                                         />
                                                     </Col>
                                                     <Col xs={24} sm={24} md={24} lg={24} xl={15}>
-                                                        <LicenseChart licenses={declaredLicensesProcessedAsNameValueColor} />
+                                                        <LicenseChart
+                                                            licenses={declaredLicensesProcessedAsNameValueColor}
+                                                        />
                                                     </Col>
                                                 </Row>
                                             )
@@ -459,10 +459,8 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                         tabItems.push({
                                             label: (
                                                 <span>
-                                                    <CodeOutlined style={{  marginRight: 5 }}/>
-                                                    Detected Licenses (
-                                                    {detectedLicensesProcessed.length}
-                                                    )
+                                                    <CodeOutlined style={{ marginRight: 5 }}/>
+                                                    Detected Licenses ({detectedLicensesProcessed.length})
                                                 </span>
                                             ),
                                             key: 'ort-summary-detected-licenses-table',
@@ -476,7 +474,9 @@ const ResultsSummary = ({ webAppOrtResult }) => {
                                                         />
                                                     </Col>
                                                     <Col xs={24} sm={24} md={24} lg={24} xl={15}>
-                                                        <LicenseChart licenses={detectedLicensesProcessedAsNameValueColor} />
+                                                        <LicenseChart
+                                                            licenses={detectedLicensesProcessedAsNameValueColor}
+                                                        />
                                                     </Col>
                                                 </Row>
                                             )

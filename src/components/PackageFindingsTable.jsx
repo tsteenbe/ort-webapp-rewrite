@@ -77,7 +77,7 @@ const PackageFindingsTable = ({ webAppPackage }) => {
     };
     const [filteredInfo, setFilteredInfo] = useState(filteredInfoDefault);
 
-    // State variable for showing or hiding table columns
+    // State variable for sorting table columns
     const [sortedInfo, setSortedInfo] = useState({});
 
     /* === Table columns === */
@@ -312,6 +312,9 @@ const PackageFindingsTable = ({ webAppPackage }) => {
             dataSource={findings}
             expandable={expandable}
             indentSize={0}
+            rowClassName="ort-package"
+            rowKey="key"
+            size="small"
             locale={{
                 emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No findings"></Empty>
             }}
@@ -326,9 +329,6 @@ const PackageFindingsTable = ({ webAppPackage }) => {
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
             }}
             onChange={handleTableChange}
-            rowClassName="ort-package"
-            rowKey="key"
-            size="small"
         />
     );
 };

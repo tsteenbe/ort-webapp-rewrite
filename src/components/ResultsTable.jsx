@@ -633,6 +633,9 @@ const ResultsTable = ({ webAppOrtResult }) => {
                 columns={columns}
                 dataSource={packages}
                 indentSize={0}
+                rowClassName="ort-package"
+                rowKey="key"
+                size="small"
                 expandable={{
                     expandedRowRender: (pkg) => {
                         const webAppPackage = webAppOrtResult.getPackageByKey(pkg.key);
@@ -718,7 +721,6 @@ const ResultsTable = ({ webAppOrtResult }) => {
                 locale={{
                     emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No packages"></Empty>
                 }}
-                onChange={handleTableChange}
                 pagination={{
                     current: pagination.current,
                     hideOnSinglePage: true,
@@ -728,9 +730,7 @@ const ResultsTable = ({ webAppOrtResult }) => {
                     position: 'both',
                     showSizeChanger: true
                 }}
-                rowClassName="ort-package"
-                rowKey="key"
-                size="small"
+                onChange={handleTableChange}
             />
         </div>
     );

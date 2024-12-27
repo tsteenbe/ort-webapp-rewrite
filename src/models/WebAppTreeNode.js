@@ -30,8 +30,6 @@ class WebAppTreeNode {
 
     #parent;
 
-    #path;
-
     #pathExcludes = new Set([]);
 
     #scope;

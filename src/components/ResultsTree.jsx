@@ -47,7 +47,6 @@ const ResultsTree = ({ webAppOrtResult }) => {
     const { dependencyTrees } = webAppOrtResult;
 
     const [expandedKeys, setExpandedKeys] = useState([]);
-    const [matchedKeys, setMatchedKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [autoExpandParent, setAutoExpandParent] = useState(true);

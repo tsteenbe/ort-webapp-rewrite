@@ -34,7 +34,7 @@ const LicenseStatsTable = ({ emptyText, licenses, licenseStats }) => {
     // State variable for filtering the contents of table columns
     const filteredInfoDefault = {
         license: [],
-        packages: [],
+        packages: []
     };
     const [filteredInfo, setFilteredInfo] = useState(filteredInfoDefault);
 
@@ -86,10 +86,11 @@ const LicenseStatsTable = ({ emptyText, licenses, licenseStats }) => {
         <Table
             columns={columns}
             dataSource={licenseStats}
+            rowKey="name"
+            size="small"
             locale={{
                 emptyText: { emptyText }
             }}
-            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -101,8 +102,7 @@ const LicenseStatsTable = ({ emptyText, licenses, licenseStats }) => {
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} results`
                 }
             }
-            rowKey="name"
-            size="small"
+            onChange={handleTableChange}
         />
     );
 };

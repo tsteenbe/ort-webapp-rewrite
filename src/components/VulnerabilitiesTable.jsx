@@ -329,6 +329,8 @@ const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn =
             className="ort-table-vulnerabilities"
             columns={columns}
             dataSource={vulnerabilities}
+            rowKey="key"
+            size="small"
             expandable={{
                 expandedRowRender: (record) => {
                     const defaultActiveKey = record.isResolved
@@ -408,7 +410,6 @@ const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn =
             locale={{
                 emptyText: 'No vulnerabilities'
             }}
-            onChange={handleTableChange}
             pagination={
                 {
                     current: pagination.current,
@@ -421,8 +422,7 @@ const VulnerabilitiesTable = ({ webAppVulnerabilities = [], showExcludesColumn =
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} issues`
                 }
             }
-            rowKey="key"
-            size="small"
+            onChange={handleTableChange}
         />
     );
 }
